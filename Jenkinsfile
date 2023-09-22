@@ -9,7 +9,7 @@ pipeline {
         IMAGE_NAME = "next-demo_app"
         VERSION_TAG = "v1.0"
     }
-     stages {
+    stages {
         stage('Docker Login') {
             steps {
                 script {
@@ -43,4 +43,5 @@ pipeline {
             }
           }
         }
-     }
+    }
+}
