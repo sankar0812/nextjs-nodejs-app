@@ -50,9 +50,9 @@ pipeline {
         stage('Build and Push Image') {
             steps {
                 script {
-                    sh "docker build -t ${IMAGE_NAME}:${VERSION_TAG} ."
-                    sh "docker tag ${IMAGE_NAME}:${VERSION_TAG} ${DOCKER_REGISTRY}/${PROJECT_NAME}/${IMAGE_NAME}:${VERSION_TAG}"
-                    sh "docker push ${DOCKER_REGISTRY}/${PROJECT_NAME}/${IMAGE_NAME}:${VERSION_TAG}"
+                    sh "docker build -t ${IMAGE_NAME}:$BUILD_NUMBER ."
+                    sh "docker tag ${IMAGE_NAME}:${VERSION_TAG} ${DOCKER_REGISTRY}/${PROJECT_NAME}/${IMAGE_NAME}:$BUILD_NUMBER"
+                    sh "docker push ${DOCKER_REGISTRY}/${PROJECT_NAME}/${IMAGE_NAME}:$"BUILD_NUMBER
                 }
             }
         }
@@ -61,7 +61,7 @@ pipeline {
             steps {
                 script {
                     // Pull the latest image
-                    sh "docker pull ${DOCKER_REGISTRY}/${PROJECT_NAME}/${IMAGE_NAME}:${VERSION_TAG}"
+                    sh "docker pull ${DOCKER_REGISTRY}/${PROJECT_NAME}/${IMAGE_NAME}:$BUILD_NUMBER"
                 }
             }
         }
