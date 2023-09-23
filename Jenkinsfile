@@ -10,6 +10,35 @@ pipeline {
         VERSION_TAG = "v1.0"
     }
     stages {
+        stage('STOPPING THE CURRENTLY RUNNING CONTAINER') {
+            steps {
+                script {
+                    catchError {
+                        sh 'echo Gove@1432 | sudo -S docker stop Next_app'
+                    }
+                }
+            }
+        }
+
+        stage('DELETING THE STOPPED CONTAINER') {
+            steps {
+                script {
+                    catchError {
+                        sh 'echo Gove@1432 | sudo -S docker rm Next_app'
+                    }
+                }
+            }
+        }
+
+        stage('DELETING THE IMAGE OF THE CONTAINER') {
+            steps {
+                script {
+                    catchError {
+                        sh 'echo Gove@1432 | sudo -S docker rmi ${DOCKER_REGISTRY}/${HARBOR_PROJECT}/${HARBOR_REPOSITORY}:$BUILD_NUMBER'
+                    }
+                }
+            }
+        }
         stage('Docker Login') {
             steps {
                 script {
@@ -39,7 +68,7 @@ pipeline {
         stage('Run the container'){
           steps{
             script{
-              sh "docker run -d --name Next_app -p 3080:3080 ${DOCKER_REGISTRY}/${PROJECT_NAME}/${IMAGE_NAME}:${VERSION_TAG}"
+              sh "docker run -d --name Next_app -p 3080:3080 ${DOCKER_REGISTRY}/${PROJECT_NAME}/${IMAGE_NAME}:$BUILD_NUMBER"
             }
           }
         }
