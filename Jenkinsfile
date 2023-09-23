@@ -52,7 +52,7 @@ pipeline {
                 script {
                     sh "docker build -t ${IMAGE_NAME}:$BUILD_NUMBER ."
                     sh "docker tag ${IMAGE_NAME}:${VERSION_TAG} ${DOCKER_REGISTRY}/${PROJECT_NAME}/${IMAGE_NAME}:$BUILD_NUMBER"
-                    sh "docker push ${DOCKER_REGISTRY}/${PROJECT_NAME}/${IMAGE_NAME}:$"BUILD_NUMBER
+                    sh "docker push ${DOCKER_REGISTRY}/${PROJECT_NAME}/${IMAGE_NAME}:$BUILD_NUMBER"
                 }
             }
         }
