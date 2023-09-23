@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_REGISTRY = "192.168.29.106:4001"
+        DOCKER_REGISTRY = "192.168.29.8:4001"
         DOCKER_USERNAME = "admin"
         DOCKER_PASSWORD = "Harbor12345"
         PROJECT_NAME = "demo"
