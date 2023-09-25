@@ -7,6 +7,7 @@ pipeline {
         DOCKER_PASSWORD = "Harbor12345"
         PROJECT_NAME = "demo"
         HARBOR_REPOSITORY = "next-demo_app"
+        tagName = "latest"
     }
     stages {
         stage('STOPPING THE CURRENTLY RUNNING CONTAINER') {
@@ -33,7 +34,7 @@ pipeline {
             steps {
                 script {
                     catchError {
-                        sh 'docker rmi ${DOCKER_REGISTRY}/${PROJECT_NAME}/${HARBOR_REPOSITORY}:${BUILD_NUMBER}'
+                        sh 'docker rmi ${DOCKER_REGISTRY}/${PROJECT_NAME}/${HARBOR_REPOSITORY}:${tagName}'
                     }
                 }
             }
