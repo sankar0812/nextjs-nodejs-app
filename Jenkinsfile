@@ -7,7 +7,7 @@ pipeline {
         DOCKER_PASSWORD = "Harbor12345"
         PROJECT_NAME = "demo"
         HARBOR_REPOSITORY = "next-demo_app"
-        tagName = "latest"
+        tagName = "BUILD_NUMBER"
     }
     stages {
         stage('STOPPING THE CURRENTLY RUNNING CONTAINER') {
