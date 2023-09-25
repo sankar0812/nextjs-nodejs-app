@@ -13,7 +13,7 @@ pipeline {
             steps {
                 script {
                     catchError {
-                        sh 'echo Gove@1432 | sudo -S docker stop Next_app'
+                        sh 'echo admin | sudo -S docker stop Next_app'
                     }
                 }
             }
@@ -23,7 +23,7 @@ pipeline {
             steps {
                 script {
                     catchError {
-                        sh 'echo Gove@1432 | sudo -S docker rm Next_app'
+                        sh 'echo admin | sudo -S docker rm Next_app'
                     }
                 }
             }
@@ -33,7 +33,7 @@ pipeline {
             steps {
                 script {
                     catchError {
-                        sh 'echo Gove@1432 | sudo -S docker rmi ${DOCKER_REGISTRY}/${HARBOR_PROJECT}/${HARBOR_REPOSITORY}:${BUILD_NUMBER}'
+                        sh 'echo admin | sudo -S docker rmi ${DOCKER_REGISTRY}/${HARBOR_PROJECT}/${HARBOR_REPOSITORY}:${BUILD_NUMBER}'
                     }
                 }
             }
