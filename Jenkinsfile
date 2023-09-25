@@ -7,6 +7,7 @@ pipeline {
         DOCKER_PASSWORD = "Harbor12345"
         PROJECT_NAME = "demo"
         HARBOR_REPOSITORY = "next-demo_app"
+        buildNumber = currentBuild.number
     }
     stages {
         stage('STOPPING THE CURRENTLY RUNNING CONTAINER') {
@@ -33,7 +34,7 @@ pipeline {
             steps {
                 script {
                     catchError {
-                        sh 'echo admin123 | sudo -S docker rmi ${DOCKER_REGISTRY}/${PROJECT_NAME}/${HARBOR_REPOSITORY}:${buildNumber}'
+                        sh 'docker rmi ${DOCKER_REGISTRY}/${PROJECT_NAME}/${HARBOR_REPOSITORY}:${buildNumber}'
                     }
                 }
             }
@@ -49,7 +50,6 @@ pipeline {
         stage('Build and Push Image') {
             steps {
                 script {
-                    def buildNumber = currentBuild.number
                     def IMAGE_NAME = "${PROJECT_NAME}/${HARBOR_REPOSITORY}"
 
                     sh "docker build -t ${DOCKER_REGISTRY}/${IMAGE_NAME}:${buildNumber} ."
