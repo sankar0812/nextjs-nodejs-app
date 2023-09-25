@@ -6,14 +6,14 @@ pipeline {
         DOCKER_USERNAME = "admin"
         DOCKER_PASSWORD = "Harbor12345"
         PROJECT_NAME = "demo"
-        IMAGE_NAME = "next-demo_app"
+        HARBOR_REPOSITORY = "next-demo_app"
     }
     stages {
         stage('STOPPING THE CURRENTLY RUNNING CONTAINER') {
             steps {
                 script {
                     catchError {
-                        sh 'echo admin123 | sudo -S docker stop Next_app'
+                        sh 'docker stop Next_app'
                     }
                 }
             }
@@ -23,7 +23,7 @@ pipeline {
             steps {
                 script {
                     catchError {
-                        sh 'echo admin123 | sudo -S docker rm Next_app'
+                        sh 'docker rm Next_app'
                     }
                 }
             }
@@ -33,7 +33,7 @@ pipeline {
             steps {
                 script {
                     catchError {
-                        sh 'echo admin123 | sudo -S docker rmi ${DOCKER_REGISTRY}/${HARBOR_PROJECT}/${HARBOR_REPOSITORY}:${BUILD_NUMBER}'
+                        sh 'echo admin123 | sudo -S docker rmi ${DOCKER_REGISTRY}/${PROJECT_NAME}/${HARBOR_REPOSITORY}:${buildNumber}'
                     }
                 }
             }
@@ -49,9 +49,12 @@ pipeline {
         stage('Build and Push Image') {
             steps {
                 script {
-                    sh "docker build -t ${IMAGE_NAME}:${BUILD_NUMBER} ."
-                    sh "docker tag ${IMAGE_NAME}:${BUILD_NUMBER} ${DOCKER_REGISTRY}/${PROJECT_NAME}/${IMAGE_NAME}:${BUILD_NUMBER}"
-                    sh "docker push ${DOCKER_REGISTRY}/${PROJECT_NAME}/${IMAGE_NAME}:${BUILD_NUMBER}"
+                    def buildNumber = currentBuild.number
+                    def IMAGE_NAME = "${PROJECT_NAME}/${HARBOR_REPOSITORY}"
+
+                    sh "docker build -t ${DOCKER_REGISTRY}/${IMAGE_NAME}:${buildNumber} ."
+                    sh "docker push ${DOCKER_REGISTRY}/${IMAGE_NAME}:${buildNumber}"
+                    sh "docker rmi ${DOCKER_REGISTRY}/${IMAGE_NAME}:${buildNumber}"
                 }
             }
         }
@@ -60,14 +63,14 @@ pipeline {
             steps {
                 script {
                     // Pull the latest image
-                    sh "docker pull ${DOCKER_REGISTRY}/${PROJECT_NAME}/${IMAGE_NAME}:${BUILD_NUMBER}"
+                    sh "docker pull ${DOCKER_REGISTRY}/${PROJECT_NAME}/${HARBOR_REPOSITORY}:${buildNumber}"
                 }
             }
         }
         stage('Run the container'){
           steps{
             script{
-              sh "docker run -d --name Next_app -p 3080:3080 ${DOCKER_REGISTRY}/${PROJECT_NAME}/${IMAGE_NAME}:${BUILD_NUMBER}"
+              sh "docker run -d --name Next_app -p 3080:3080 ${DOCKER_REGISTRY}/${PROJECT_NAME}/${HARBOR_REPOSITORY}:${buildNumber}"
             }
           }
         }
