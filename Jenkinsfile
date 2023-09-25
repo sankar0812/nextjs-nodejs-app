@@ -7,7 +7,6 @@ pipeline {
         DOCKER_PASSWORD = "Harbor12345"
         PROJECT_NAME = "demo"
         HARBOR_REPOSITORY = "next-demo_app"
-        tagName = "BUILD_NUMBER"
     }
     stages {
         stage('STOPPING THE CURRENTLY RUNNING CONTAINER') {
@@ -33,8 +32,15 @@ pipeline {
         stage('DELETING THE IMAGE OF THE CONTAINER') {
             steps {
                 script {
+                    // Calculate the previous build number
+                    def previousBuildNumber = BUILD_NUMBER.toInteger() - 1
+            
+                    // Construct the image name and tag with the previous build number
+                    def imageNameWithTag = "${DOCKER_REGISTRY}/${PROJECT_NAME}/${HARBOR_REPOSITORY}:${previousBuildNumber}"
+
+                    // Delete the previous image
                     catchError {
-                        sh 'docker rmi ${DOCKER_REGISTRY}/${PROJECT_NAME}/${HARBOR_REPOSITORY}:${tagName}'
+                        sh "docker rmi ${imageNameWithTag}"
                     }
                 }
             }
