@@ -57,7 +57,7 @@ pipeline {
             steps {
                 script {
                     def IMAGE_NAME = "${PROJECT_NAME}/${HARBOR_REPOSITORY}"
-                    docker build -t sankar0812/nodeapp:$BUILD_NUMBER .
+                    sh "docker build -t sankar0812/nodeapp:$BUILD_NUMBER ."
                    /** sh "docker build -t ${DOCKER_REGISTRY}/${IMAGE_NAME}:${BUILD_NUMBER} ."
                     sh "docker push ${DOCKER_REGISTRY}/${IMAGE_NAME}:${BUILD_NUMBER}"
                     sh "docker rmi ${DOCKER_REGISTRY}/${IMAGE_NAME}:${BUILD_NUMBER}"**/
