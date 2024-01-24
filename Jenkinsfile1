@@ -6,7 +6,7 @@ pipeline {
     stages { 
         stage('SCM Checkout') {
             steps {
-            git 'https://github.com/sankar0812/nodejs-demo.git'
+            git 'https://github.com/sankar0812/nextjs-nodejs-app.git'
             }
         }
         stage('Build docker image') {
