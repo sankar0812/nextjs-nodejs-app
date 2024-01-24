@@ -29,7 +29,7 @@ pipeline {
             }
         }
 
-        stage('DELETING THE IMAGE OF THE CONTAINER') {
+        /**stage('DELETING THE IMAGE OF THE CONTAINER') {
             steps {
                 script {
                     // Calculate the previous build number
@@ -44,23 +44,23 @@ pipeline {
                     }
                 }
             }
-        }
-        stage('Docker Login') {
+        }**/
+       /** stage('Docker Login') {
             steps {
                 script {
                     sh "docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD} ${DOCKER_REGISTRY}"
                 }
             }
-        }
+        }**/
 
         stage('Build and Push Image') {
             steps {
                 script {
                     def IMAGE_NAME = "${PROJECT_NAME}/${HARBOR_REPOSITORY}"
-
-                    sh "docker build -t ${DOCKER_REGISTRY}/${IMAGE_NAME}:${BUILD_NUMBER} ."
+                    docker build -t sankar0812/nodeapp:$BUILD_NUMBER .
+                   /** sh "docker build -t ${DOCKER_REGISTRY}/${IMAGE_NAME}:${BUILD_NUMBER} ."
                     sh "docker push ${DOCKER_REGISTRY}/${IMAGE_NAME}:${BUILD_NUMBER}"
-                    sh "docker rmi ${DOCKER_REGISTRY}/${IMAGE_NAME}:${BUILD_NUMBER}"
+                    sh "docker rmi ${DOCKER_REGISTRY}/${IMAGE_NAME}:${BUILD_NUMBER}"**/
                 }
             }
         }
