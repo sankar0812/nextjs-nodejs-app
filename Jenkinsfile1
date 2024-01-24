@@ -26,7 +26,7 @@ pipeline {
         }
         stage('run container')  {
             steps {
-                sh 'docker run -d --name web1 -p 3000:3000 sankar0812/nodeapp:$BUILD_NUMBER'
+                sh 'docker run -d --name node_app_1 -p 3080:3080 sankar0812/nodeapp:$BUILD_NUMBER'
             }
         }
 }
